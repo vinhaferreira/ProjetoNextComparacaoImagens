@@ -1,2 +1,7 @@
 hello world!
+<<<<<<< HEAD
 Fala galerinha
+=======
+Flávia
+>>>>>>> cea5bfe860d3b4f9e7679930767539cbd69d5b6f
+
