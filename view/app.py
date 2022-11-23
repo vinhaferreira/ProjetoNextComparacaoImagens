@@ -1,15 +1,14 @@
-from flask import Flask, flash, request, redirect, url_for, render_template
-import urllib.request
 import os
-import uuid
-from werkzeug.utils import secure_filename
 import urllib.request
+
+from flask import Flask, flash, redirect, render_template, request, url_for
+from werkzeug.utils import secure_filename
 
 #inicializa o flask
 app = Flask(__name__)
 
 #diretorio onde serão salvas as imagens
-UPLOAD_FOLDER = '\salvaImagem'
+UPLOAD_FOLDER = '..\\uploads'
 
 app.secret_key = "projetonextt3"
 app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
@@ -54,7 +53,7 @@ def upload_image():
 @app.route('/display/<filename>')
 def display_image(filename):
     print('display_image filename: ' + filename)
-    return redirect(url_for('static', filename = 'uploads/' + filename), code = 301)
+    return redirect(url_for('static', filename = '/uploads' + filename), code = 301)
 
 if __name__ == "__main__":
     app.run(debug=True)
