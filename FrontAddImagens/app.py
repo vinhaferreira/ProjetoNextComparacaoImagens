@@ -1,22 +1,23 @@
 from flask import Flask, flash, request, redirect, url_for, render_template
 import urllib.request
 import os
+import uuid
 from werkzeug.utils import secure_filename
 import urllib.request
 
 app = Flask(__name__)
 
-UPLOAD_FOLDER = 'static/uploads/'
+UPLOAD_FOLDER = '.\salvaImagem'
 
 app.secret_key = "projetonextt3"
 app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
 app.config['MAX_CONTENT_LENGTH'] = 16 * 1024 * 1024
 
-ALLOWED_EXTENSIONS = set('jpg')
+ALLOWED_EXTENSIONS = {'jpg'}
 
 def allowed_file(filename):
-    return '.' in filename and filename.rsplit('.', 1).lower() in ALLOWED_EXTENSIONS
-
+    return '.' in filename and filename.rsplit('.', 1)[1].lower() in ALLOWED_EXTENSIONS
+    
 @app.route("/")
 def upload_form():
     return render_template('upload.html')
@@ -36,7 +37,8 @@ def upload_image():
             filename = secure_filename(file.filename)
             file_names.append(filename)
             file.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
-        
+
+
         else:
             flash('Só são permitidas imagens com extensão .jpg.')
             return redirect(request.url)
