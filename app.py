@@ -1,6 +1,6 @@
 import os
 import urllib.request
-
+from controller.renomearimagem import renomearimagem
 
 from flask import Flask, flash, redirect, render_template, request, url_for
 from werkzeug.utils import secure_filename
@@ -9,7 +9,7 @@ from werkzeug.utils import secure_filename
 app = Flask(__name__)
 
 #diretorio onde serão salvas as imagens
-UPLOAD_FOLDER = '..\\uploads'
+UPLOAD_FOLDER = './uploads'
 
 app.secret_key = "projetonextt3"
 app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
@@ -36,13 +36,20 @@ def upload_image():
         
     files = request.files.getlist('files[]')
     file_names =[]
+    file_uuid =[]
     
     for file in files:
         
         if file and allowed_file(file.filename):
+            #salva o nome do arquivo no vetor
             filename = secure_filename(file.filename)
             file_names.append(filename)
+            #salva a imagem
             file.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
+            #renomeia o arquivo
+            renomearimagem(filename)
+            #salva o código uuid dessa imagem
+            file_uuid.append(filename)
 
 
         else:
