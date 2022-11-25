@@ -1,6 +1,7 @@
 import os
 import urllib.request
 from controller.renomearimagem import renomearimagem
+from controller.gerador_phash import gerador_phash
 
 from flask import Flask, flash, redirect, render_template, request, url_for
 from werkzeug.utils import secure_filename
@@ -37,19 +38,32 @@ def upload_image():
     files = request.files.getlist('files[]')
     file_names =[]
     file_uuid =[]
-    
+    file_phash = []
+
     for file in files:
         
         if file and allowed_file(file.filename):
             #salva o nome do arquivo no vetor
             filename = secure_filename(file.filename)
             file_names.append(filename)
+            arquivo = open('file_name.txt','a')
+            arquivo.write(filename+'\n')
+            arquivo.close()
             #salva a imagem
             file.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
             #renomeia o arquivo
-            renomearimagem(filename)
+            filename = renomearimagem(filename)
+            arquivo = open('file_uuid.txt','a')
+            arquivo.write(filename+'\n')
+            arquivo.close()
             #salva o código uuid dessa imagem
             file_uuid.append(filename)
+            #gera o código p_hash
+            filephash = gerador_phash(filename)
+            file_phash.append(filephash)
+            arquivo = open('phash.txt','a')
+            arquivo.write(filephash+'\n')
+            arquivo.close()
 
 
         else:
@@ -61,7 +75,7 @@ def upload_image():
 @app.route('/display/<filename>')
 def display_image(filename):
     print('display_image filename: ' + filename)
-    return redirect(url_for('static', filename = '/uploads' + filename), code = 301)
+    return redirect(url_for('static', filename = './uploads' + filename), code = 301)
 
 if __name__ == "__main__":
     app.run(debug=True)
