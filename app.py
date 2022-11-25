@@ -49,15 +49,19 @@ def upload_image():
             file_names.append(filename)
             #salva a imagem
             file.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
-            #renomeia o arquivo
-            fileuuid = renomearimagem(filename)
-            #salva o código uuid dessa imagem
-            file_uuid.append(fileuuid)
-            #gera o código p_hash
-            filephash = gerador_phash(fileuuid)
-            file_phash.append(filephash)
-            inserir_banco(filename, fileuuid, filephash)
-
+            try:
+                gerador_phash(filename)
+                #renomeia o arquivo
+                fileuuid = renomearimagem(filename)
+                #salva o código uuid dessa imagem
+                file_uuid.append(fileuuid)
+                #gera o código p_hash
+                filephash = gerador_phash(fileuuid)
+                file_phash.append(filephash)
+                inserir_banco(filename, fileuuid, filephash)
+            except:
+                flash("Imagem Corrompida")
+                return redirect(request.url)
 
         else:
             flash('Só são permitidas imagens com extensão .jpg.')
@@ -68,7 +72,7 @@ def upload_image():
 @app.route('/display/<filename>')
 def display_image(filename):
     print('display_image filename: ' + filename)
-    return redirect(url_for('static', filename = './uploads' + filename), code = 301)
+    return redirect(url_for('static', filename = '/uploads/' + filename), code = 301)
 
 if __name__ == "__main__":
     app.run(debug=True)

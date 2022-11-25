@@ -10,7 +10,7 @@ otherhash = imagehash.phash(Image.open(r'C:\Users\Gustavo\Desktop\projetoNEXT\Ph
 print('Imagem 2:' + str(otherhash))
 
 #Transformando a diferença entre as imgaens em string (quando estava em int, estava apresentando erro)
-diference = str(hash-otherhash)
+diference = str(hash-otherhash)/64*100
 
 #Comparando as imagens para determinar se são iguais ou não:  
 if (hash == otherhash):
