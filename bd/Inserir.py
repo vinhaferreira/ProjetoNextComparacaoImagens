@@ -1,16 +1,18 @@
 import mysql.connector
 from mysql.connector import Error
 
-try:
-    con = mysql.connector.connect(host='localhost',database='novobd', user = 'root', password = 'puabrasil206')
+nome = " ' teste ' "
+uuid = " 'carlos' "
+phash = " 'testando ' "
+var = "(" + nome + "," + uuid + "," + phash + ")"
 
-    inserir_produtos = """INSERT INTO banco_teste
-                        (id_teste, nome_teste, data_teste)
+try:
+    con = mysql.connector.connect(host='localhost',database='dadosimagem', user = 'root', password = 'puabrasil206')
+
+    inserir_produtos = """INSERT INTO banco_imagem
+                        (name_img, uuid, phash)
                         VALUES
-                        (4, 'gio', 12/12/1994),
-                        (5, 'flavia', 15/12/1994),
-                        (6, 'roberta', 18/12/1994)
-                        """
+                        """ + var
 
     cursor = con.cursor()
     cursor.execute(inserir_produtos)
