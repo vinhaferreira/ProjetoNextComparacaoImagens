@@ -2,6 +2,7 @@ import os
 import urllib.request
 from controller.renomearimagem import renomearimagem
 from controller.gerador_phash import gerador_phash
+from bd.Inserir import inserir_banco
 
 from flask import Flask, flash, redirect, render_template, request, url_for
 from werkzeug.utils import secure_filename
@@ -46,24 +47,16 @@ def upload_image():
             #salva o nome do arquivo no vetor
             filename = secure_filename(file.filename)
             file_names.append(filename)
-            arquivo = open('file_name.txt','a')
-            arquivo.write(filename+'\n')
-            arquivo.close()
             #salva a imagem
             file.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
             #renomeia o arquivo
-            filename = renomearimagem(filename)
-            arquivo = open('file_uuid.txt','a')
-            arquivo.write(filename+'\n')
-            arquivo.close()
+            fileuuid = renomearimagem(filename)
             #salva o código uuid dessa imagem
-            file_uuid.append(filename)
+            file_uuid.append(fileuuid)
             #gera o código p_hash
-            filephash = gerador_phash(filename)
+            filephash = gerador_phash(fileuuid)
             file_phash.append(filephash)
-            arquivo = open('phash.txt','a')
-            arquivo.write(filephash+'\n')
-            arquivo.close()
+            inserir_banco(filename, fileuuid, filephash)
 
 
         else:

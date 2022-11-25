@@ -1,6 +1,6 @@
 import mysql.connector
 
-con = mysql.connector.connect(host="localhost", database="novobd",user = "root", password = "puabrasil206")
+con = mysql.connector.connect(host="localhost", database="bd",user = "root", password = "qfCSH5J6W&!&q")
 
 if con.is_connected() :
     db_info = con.get_server_info()
