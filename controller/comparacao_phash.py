@@ -1,19 +1,30 @@
 from PIL import Image 
 #Importando dependência
 import imagehash
-#Criando número Hash da primeira imagem
-hash = imagehash.phash(Image.open(r'C:\Users\Gustavo\Desktop\projetoNEXT\Phash\images/1.png'),hash_size= 10)
-print ('Imagem 1: ' + str(hash))
+from receber_dados_bd import receber_dados_bd
+import pandas
 
-#Criando número Hash da segunda imagem
-otherhash = imagehash.phash(Image.open(r'C:\Users\Gustavo\Desktop\projetoNEXT\Phash\images/2.png'),hash_size= 10)
-print('Imagem 2:' + str(otherhash))
+def comparacao_phash_2img(hash1, hash2):
+    if (hash1 == hash2):
+        print ("As imagens são iguais!")
+    else:
+        #Transformando a diferença entre as imgaens em string (quando estava em int, estava apresentando erro)
+        diference = str(hash1-hash2)/64*100
+        #Comparando as imagens para determinar se são iguais ou não:  
+        print('As imagens são diferentes, a distância entre elas é de:' + diference + '%')  #hamming distance
 
-#Transformando a diferença entre as imgaens em string (quando estava em int, estava apresentando erro)
-diference = str(hash-otherhash)/64*100
+def comparacao_phash_banco(hash1):
+    df = receber_dados_bd()
+    for i in df.itertuples():
+        sim = 0
+        diff = 0
+        for j in range(0,len(hash1),1):
+            if hash1[j] == i.phash[j]:
+                sim = sim + 1
+            else:
+                diff = diff +1
+        break
+   
+    
 
-#Comparando as imagens para determinar se são iguais ou não:  
-if (hash == otherhash):
-    print ("As imagens são iguais!")
-else:
-    print('As imagens são diferentes, a distância entre elas é de:' + diference)  #hamming distance
+comparacao_phash_banco("asdasfasd")

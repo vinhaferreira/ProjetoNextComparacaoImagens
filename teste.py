@@ -1,11 +1,17 @@
+from scipy.spatial.distance import hamming
 
 prim = "ffd3c181818181ff"
 seg = "e3c38787878d8f81"
 print(len(prim))
 print(len(seg))
 
+print(''.join(format(ord(i), 'b') for i in prim))
+print(len(''.join(format(ord(i), 'b') for i in prim)))
+
 has = "1111111111010011110000011000000110000001100000011000000111111111"
 has2 = "1110001111000011100001111000011110000111100011011000111110000001"
+
+
 print(len(has))
 print(len(has2))
 
@@ -22,4 +28,8 @@ print(has2)
 print(diff)
 
 print(diff/64*100)
+
+hamming_distance = hamming(has, has2)
+print(hamming_distance)
+
 

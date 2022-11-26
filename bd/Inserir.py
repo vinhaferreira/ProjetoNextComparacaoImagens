@@ -1,11 +1,31 @@
 import mysql.connector
 from mysql.connector import Error
 
+def conectar_bd():
+
+    con = mysql.connector.connect(host="localhost", database="bd",user = "root", password = "qfCSH5J6W&!&q")
+
+    if con.is_connected() :
+        db_info = con.get_server_info()
+        print("Conectado no servidor versão", db_info)
+        cursor = con.cursor()
+        cursor.execute("select database();")
+        linha = cursor.fetchone()
+        print("Conectado ao banco de dados ", linha)
+
+    return con
+
+def fechar_bd(conexao, cursor):
+    if conexao.is_connected() :
+        cursor.close()
+        conexao.close()
+        print("Conexão encerrada")
+        
 def inserir_banco(nome, uuid, phash):
     var = "('" + nome + "','" + uuid + "','" + phash + "')"
 
     try:
-        con = mysql.connector.connect(host='localhost',database='dadosimagem', user = 'root', password = 'qfCSH5J6W&!&q')
+        con = conectar_bd()
 
         inserir_produtos = """INSERT INTO banco_imagem
                             (name_img, uuid, phash)
@@ -21,7 +41,4 @@ def inserir_banco(nome, uuid, phash):
         print("Falha ao inserir: {}".format(erro))
 
     finally:
-        if (con.is_connected()):
-            cursor.close()
-            con.close()
-            print("conexão finalizada.")
+        fechar_bd(con, cursor)

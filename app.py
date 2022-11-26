@@ -8,17 +8,17 @@ from flask import Flask, flash, redirect, render_template, request, url_for
 from werkzeug.utils import secure_filename
 
 #inicializa o flask
-app = Flask(__name__)
+app = Flask(__name__, template_folder='./view/templates',static_folder='static')
 
 #diretorio onde serão salvas as imagens
-UPLOAD_FOLDER = './uploads'
+UPLOAD_FOLDER = os.path.join('static', 'uploads')
 
 app.secret_key = "projetonextt3"
 app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
 app.config['MAX_CONTENT_LENGTH'] = 16 * 1024 * 1024
 
 
-ALLOWED_EXTENSIONS = {'jpg'}
+ALLOWED_EXTENSIONS = {'jpg', 'jpeg'}
 
 
 def allowed_file(filename):
@@ -71,8 +71,9 @@ def upload_image():
 
 @app.route('/display/<filename>')
 def display_image(filename):
-    print('display_image filename: ' + filename)
-    return redirect(url_for('static', filename = '/uploads/' + filename), code = 301)
+    #print('display_image filename: ' + filename)
+    return redirect(url_for('static', filename = '/static/uploads/' + filename), code = 301)
+
 
 if __name__ == "__main__":
     app.run(debug=True)
