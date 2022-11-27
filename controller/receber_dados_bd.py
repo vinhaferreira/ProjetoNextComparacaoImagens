@@ -28,11 +28,14 @@ def receber_dados_bd():
         result = list(result)
         from_db.append(result)
 
+    print(from_db)
+
 
     columns = ["nome", "uuid", "phash"]
     df = pd.DataFrame(from_db, columns=columns)
     #for result in results:
     # print(result)
 
-    #display(df)
+    display(df)
     return df
+    
