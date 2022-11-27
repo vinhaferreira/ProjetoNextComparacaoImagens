@@ -28,7 +28,7 @@ def receber_dados_bd():
         result = list(result)
         from_db.append(result)
 
-    print(from_db)
+    #print(from_db)
 
 
     columns = ["nome", "uuid", "phash"]
@@ -36,6 +36,6 @@ def receber_dados_bd():
     #for result in results:
     # print(result)
 
-    display(df)
+    #display(df)
     return df
     
