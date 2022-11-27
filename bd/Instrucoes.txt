@@ -5,3 +5,4 @@ CREATE TABLE IF NOT EXISTS banco_imagem (
     );
     
 select * FROM banco_imagem;
+
