@@ -1,0 +1,7 @@
+mysql-connector-python
+pillow
+imagehash
+flask
+pandas
+ipython
+uuid
