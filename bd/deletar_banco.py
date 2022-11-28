@@ -1,6 +1,7 @@
 import mysql.connector
+import os
 
-def deletar(uuid):
+def deletar_banco(uuid):
     conexao = mysql.connector.connect(host="localhost", database="dadosimagem",user = "root", password = "qfCSH5J6W&!&q")
     cursor = conexao.cursor()
 
@@ -10,7 +11,11 @@ def deletar(uuid):
 
     cursor.close()
     conexao.close()
-
     
+def deletar(uuid):
+    deletar_banco(uuid)
+    caminho = os.path.join('static', 'uploads', uuid)
+    if os.path.exists(caminho):
+        os.remove(caminho)
 
-deletar("4f553228-306d-4127-8925-18301fcd045f.jpg")
+deletar("21fcd668-96ae-4790-bb5f-bb398f9a57d2.jpg")

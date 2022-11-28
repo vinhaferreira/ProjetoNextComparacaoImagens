@@ -3,6 +3,7 @@ from mysql.connector import Error
 import pandas as pd
 from IPython.display import display
 
+
 def read_query(connection, query):
     cursor = connection.cursor()
     result = None

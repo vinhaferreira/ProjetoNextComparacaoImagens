@@ -1,23 +1,29 @@
-import hashlib
+from bd.deletar_banco import deletar
 
-def hamming_distance(chaine1, chaine2):
-    return sum(c1 != c2 for c1, c2 in zip(chaine1, chaine2))
+deletar("54bd3ac8-e5f2-4424-8d9a-4df008a77eca.jpg")
+# deletar = Deletar_banco()
+# deletar.deletar_banco("21fcd668-96ae-4790-bb5f-bb398f9a57d2")
 
-def hamming_distance2(chaine1, chaine2):
-    return len(list(filter(lambda x : ord(x[0])^ord(x[1]), zip(chaine1, chaine2))))
+# import hashlib
 
-if __name__=="__main__":    
-    chaine1 = hashlib.md5("chaine1".encode()).hexdigest()
-    chaine2 = hashlib.md5("chaine2".encode()).hexdigest()
+# def hamming_distance(chaine1, chaine2):
+#     return sum(c1 != c2 for c1, c2 in zip(chaine1, chaine2))
 
-    #chaine1 = "6fb17381822a6ca9b02153d031d5d3da"
-    #chaine2 = "a242eace2c57f7a16e8e872ed2f2287d"
+# def hamming_distance2(chaine1, chaine2):
+#     return len(list(filter(lambda x : ord(x[0])^ord(x[1]), zip(chaine1, chaine2))))
 
-    assert len(chaine1) == len(chaine2)
+# if __name__=="__main__":    
+#     chaine1 = hashlib.md5("chaine1".encode()).hexdigest()
+#     chaine2 = hashlib.md5("chaine2".encode()).hexdigest()
 
-    print(hamming_distance(chaine1, chaine2))
+#     #chaine1 = "6fb17381822a6ca9b02153d031d5d3da"
+#     #chaine2 = "a242eace2c57f7a16e8e872ed2f2287d"
 
-    print(hamming_distance2(chaine1, chaine2))
+#     assert len(chaine1) == len(chaine2)
+
+#     print(hamming_distance(chaine1, chaine2))
+
+#     print(hamming_distance2(chaine1, chaine2))
 
 # prim = "ffd3c181818181ff"
 # seg = "e3c38787878d8f81"
