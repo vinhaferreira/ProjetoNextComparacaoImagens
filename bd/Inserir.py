@@ -3,7 +3,7 @@ from mysql.connector import Error
 
 def conectar_bd():
 
-    con = mysql.connector.connect(host="localhost", database="dadosimagem",user = "root", password = "123456")
+    con = mysql.connector.connect(host="localhost", database="dadosimagem",user = "root", password = "qfCSH5J6W&!&q")
     if con.is_connected() :
         db_info = con.get_server_info()
         print("Conectado no servidor versão", db_info)
