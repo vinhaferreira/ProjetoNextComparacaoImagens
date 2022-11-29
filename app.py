@@ -3,6 +3,9 @@ import urllib.request
 from controller.renomearimagem import renomearimagem
 from controller.gerador_phash import gerador_phash
 from bd.Inserir import inserir_banco
+from bd.deletar_banco import deletar
+from controller.comparacao_phash import comparacao_phash_banco
+from controller.receber_dados_bd import receber_dados_bd
 
 from flask import Flask, flash, redirect, render_template, request, url_for
 from werkzeug.utils import secure_filename
@@ -12,6 +15,7 @@ app = Flask(__name__, template_folder='./view/templates',static_folder='static')
 
 #diretorio onde serão salvas as imagens
 UPLOAD_FOLDER = os.path.join('static', 'uploads')
+UPLOAD_FOLDER2 = os.path.join('static', 'temp')
 
 app.secret_key = "projetonextt3"
 app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
@@ -74,6 +78,45 @@ def display_image(filename):
     #print('display_image filename: ' + filename)
     return redirect(url_for('static', filename = '/static/uploads/' + filename), code = 301)
 
+
+@app.route("/deletar/<uuid>")
+def deletar_a_imagem(uuid):
+    filename = f"{uuid}.jpg"
+    deletar(filename)
+    return redirect('/deletar')
+
+    
+@app.route("/comparacao")
+def comparacao_form():
+    return render_template('comparacao.html')
+
+@app.route("/comparacao", methods = ['POST'])
+def comparacao_image():
+    
+    if 'arquivo' not in request.files:
+        flash('Nenhum arquivo encontrado')
+        
+    file = request.files.getlist('arquivo')
+    
+  
+    if file and allowed_file(file.filename):
+            #salva o nome do arquivo no vetor
+            filename = secure_filename(file.filename)
+            #salva a imagem
+            file.save(os.path.join(app.config['UPLOAD_FOLDER2'], filename))
+            try:
+                phash_temp = str(gerador_phash(filename))
+                #renomeia o arquivo
+                img_mais_parecida = comparacao_phash_banco(phash_temp)
+            except:
+                flash(img_mais_parecida)
+                return redirect(request.url)
+
+    else:
+        flash('Só são permitidas imagens com extensão .jpg.')
+        return redirect(request.url)
+        
+    return render_template('comparacao.html')
 
 
 if __name__ == "__main__":

@@ -16,6 +16,9 @@ def deletar(uuid):
     deletar_banco(uuid)
     caminho = os.path.join('static', 'uploads', uuid)
     if os.path.exists(caminho):
-        os.remove(caminho)
+        try:
+            os.remove(caminho)
+            return "Imagem deletada com sucesso"
+        except Exception as e:
+            return f"Error ao deletar"
 
-deletar("21fcd668-96ae-4790-bb5f-bb398f9a57d2.jpg")

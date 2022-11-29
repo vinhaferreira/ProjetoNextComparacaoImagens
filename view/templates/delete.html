@@ -1,0 +1,23 @@
+<html>
+
+    <head>
+        <title>Delete um arquivo</title>
+    </head>
+
+    <body>
+        <div style="padding:20px;">
+            <h2>Delete uma imagem</h2>
+            
+            <h4>Insira o código uuid da imagem:</h4>
+
+            <form method="post" action="/deletar" enctype="text/plain">        
+                <input type="text" name="uuid" placeholder="Código UUID" size="100" required/>
+                    <p>
+                    <a href="/deletar/{{ uuid }}"> botao </a>
+                    </p>
+                </div>
+            </form>
+
+    </body>
+
+</html>

@@ -37,6 +37,7 @@ def receber_dados_bd():
     #for result in results:
     # print(result)
 
-    #display(df)
+    display(df)
     return df
     
+receber_dados_bd()
