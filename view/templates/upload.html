@@ -33,7 +33,7 @@
         {% if filenames %}
         {% for filename in filenames %}
         <div style="padding:20px;float:left;">
-            <img width="500" src="{{ url_for('display_image', filename = fileuuid) }}">
+            <img width="500" src="{{ url_for('display_image_comp', filename = filename) }}">
         </div>
         {% endfor %}
         {% endif %}

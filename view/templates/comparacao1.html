@@ -6,7 +6,7 @@
 
 <body>
     <div style="padding:20px;">
-        <h2>Faça upload e compare uma imagem com as existentes no banco.</h2>
+        <h2>Compare uma imagem com as existentes no banco.</h2>
         <p>
             {% with messages = get_flashed_messages() %}
             {% if messages %}
@@ -18,7 +18,7 @@
         {% endif %}
         {% endwith %}
         </p>
-        <form method="post" action="/" enctype="multipart/form-data">
+        <form method="post" action="/comparacao" enctype="multipart/form-data">
             <dl>
                 <p>
                     <input type="file" name="arquivo" multiple="false" autocomplete="off" required>
@@ -30,13 +30,11 @@
             </p>
 
         </form>
-        <!-- {% if filenames %}
-        {% for filename in filenames %}
+        {% if filename %}
         <div style="padding:20px;float:left;">
-            <img width="500" src="{{ url_for('display_image', filename = fileuuid) }}">
+            <img width="500" src="{{ url_for('display_image', filename = filename) }}">
         </div>
-        {% endfor %}
-        {% endif %} -->
+        {% endif %}
     </div>
 </body>
 

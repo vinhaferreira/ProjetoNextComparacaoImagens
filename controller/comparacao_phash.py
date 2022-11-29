@@ -40,7 +40,7 @@ def receber_dados_bd():
     #for result in results:
     # print(result)
 
-    display(df)
+    # display(df)
     return df
 
 def comparacao_phash_2img(hash1, hash2):
@@ -68,7 +68,7 @@ def comparacao_phash_banco(hash1):
         if dif < maior_porc:
             maior_porc = dif
             img_mais_similar = i.uuid
-    return img_mais_similar
+    return [img_mais_similar, maior_porc]
    
     
 #comparacao_phash_2img("ffd3c181818181ff", "e3c38787878d8f81")

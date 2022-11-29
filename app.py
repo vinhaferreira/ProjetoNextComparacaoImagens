@@ -72,12 +72,12 @@ def upload_image():
             flash('Só são permitidas imagens com extensão .jpg.')
             return redirect(request.url)
         
-    return render_template('upload.html', filenames = file_names)
+    return render_template('upload.html', filenames = file_uuid)
 
 @app.route('/display/<filename>')
 def display_image(filename):
-    #print('display_image filename: ' + filename)
-    return redirect(url_for('static', filename = '/static/uploads/' + filename), code = 301)
+    print('display_image filename: ' + filename)
+    return redirect(url_for('static', filename = '/uploads/' + filename), code = 301)
 
 
 @app.route("/deletar")
@@ -126,10 +126,15 @@ def comparacao_imagem():
             try:
                 phash_temp = str(gerador_phash_temp(filename))
                 #renomeia o arquivo
-                img_mais_parecida = comparacao_phash_banco(phash_temp)
+                dados = comparacao_phash_banco(phash_temp)
                 
-                flash(phash_temp)
+                img_mais_parecida = dados[0]
+                diferenca = dados[1]
+
+                # flash(phash_temp)
                 flash(img_mais_parecida)
+                flash(diferenca+'%')
+                os.remove(os.path.join('./static/temp/', filename))
 
             except:
                 flash(img_mais_parecida)
@@ -139,7 +144,12 @@ def comparacao_imagem():
         flash('Só são permitidas imagens com extensão .jpg.')
         return redirect('/comparacao')
         
-    return render_template('comparacao.html')
+    return render_template('comparacao1.html', filename = img_mais_parecida)
+
+@app.route('/comparacao/display/<filename>')
+def display_image_comp(filename):
+    print('display_image filename: ' + filename)
+    return redirect(url_for('static', filename = '/uploads/' + filename), code = 301)
 
 
 if __name__ == "__main__":
