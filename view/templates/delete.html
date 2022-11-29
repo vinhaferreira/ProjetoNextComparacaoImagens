@@ -10,14 +10,12 @@
             
             <h4>Insira o código uuid da imagem:</h4>
 
-            <form method="post" action="/deletar" enctype="text/plain">        
-                <input type="text" name="uuid" placeholder="Código UUID" size="100" required/>
-                    <p>
-                    <a href="/deletar/{{ uuid }}"> botao </a>
-                    </p>
-                </div>
-            </form>
+            <form method="post" action="/deletar">        
+                <input type="text" id="uuid" name="uuid" placeholder="Código UUID" size="100" required/>
+                    <input type="submit"  value="Deletar">
 
+            </form>
+        </div>
     </body>
 
 </html>

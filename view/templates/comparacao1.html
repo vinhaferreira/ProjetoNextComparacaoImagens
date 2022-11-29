@@ -1,12 +1,12 @@
 <html>
 
 <head>
-    <title>Faça upload e visualize multiplas imagens.</title>
+    <title>Compare uma imagem com as existentes no banco.</title>
 </head>
 
 <body>
     <div style="padding:20px;">
-        <h2>Faça upload e visualize multiplas imagens.</h2>
+        <h2>Faça upload e compare uma imagem com as existentes no banco.</h2>
         <p>
             {% with messages = get_flashed_messages() %}
             {% if messages %}
@@ -30,13 +30,13 @@
             </p>
 
         </form>
-        {% if filenames %}
+        <!-- {% if filenames %}
         {% for filename in filenames %}
         <div style="padding:20px;float:left;">
             <img width="500" src="{{ url_for('display_image', filename = fileuuid) }}">
         </div>
         {% endfor %}
-        {% endif %}
+        {% endif %} -->
     </div>
 </body>
 

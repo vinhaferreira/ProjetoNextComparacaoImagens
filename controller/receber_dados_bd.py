@@ -40,4 +40,4 @@ def receber_dados_bd():
     display(df)
     return df
     
-receber_dados_bd()
+# receber_dados_bd()
