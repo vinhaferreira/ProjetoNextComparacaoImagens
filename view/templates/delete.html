@@ -13,8 +13,21 @@
             <form method="post" action="/deletar">        
                 <input type="text" id="uuid" name="uuid" placeholder="Código UUID" size="100" required/>
                     <input type="submit"  value="Deletar">
-
+            
             </form>
+            
+            <p>
+                {% with messages = get_flashed_messages() %}
+                {% if messages %}
+            <ul class=flashes>
+                {% for message in messages%}
+                <li>{{ message }}</li>
+                {% endfor %}
+            </ul>
+            {% endif %}
+            {% endwith %}
+            </p>
+        
         </div>
     </body>
 

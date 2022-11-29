@@ -56,4 +56,5 @@ def comparacao_phash_banco(hash1):
             maior_porc = dif
             img_mais_similar = i.uuid
             nome_original = i.nome
+
     return [img_mais_similar, maior_porc, nome_original]

@@ -47,7 +47,7 @@ def upload_image():
     for file in files:
         
         if file and allowed_file(file.filename):
-            #salva o nome do arquivo no vetor
+            #salva o nome do original arquivo no vetor
             filename = secure_filename(file.filename)
             file_names.append(filename)
             #salva a imagem
@@ -56,7 +56,6 @@ def upload_image():
                 gerador_phash(filename)
                 #renomeia o arquivo
                 fileuuid = renomearimagem(filename)
-                #salva o código uuid dessa imagem
                 file_uuid.append(fileuuid)
                 #gera o código p_hash
                 filephash = gerador_phash(fileuuid)
@@ -84,12 +83,15 @@ def deletar_img():
 
 @app.route("/deletar", methods = ['POST'])
 def deletar_imagem():
-    print("to aqui")
     filename = request.form.get('uuid')
     print(request.form.get('uuid'))
-    print("to aqui")
-    deletar(filename)
-    return "ok",200
+    try:
+        deletar(filename+'.jpg')
+        flash("Imagem deletada com sucesso")
+    except:
+        flash("Erro ao deletar")
+    return render_template('delete.html')
+
 
 @app.route("/comparacao")
 def comparacao_form():
@@ -115,8 +117,11 @@ def comparacao_imagem():
                 uuid = dados[0]
                 nome_original = dados[2]
                 diferenca = dados[1]
-                flash(nome_original)
-                flash(str(diferenca)+'%')
+                if diferenca == 0:
+                    flash("A imagem " + nome_original + " é igual à selecionada.")
+                else:
+                    flash("A imagem " + nome_original + " é a mais similar à selecionada.")
+                    flash("A diferença é de "+ str(diferenca)+ "%")
                 os.remove(os.path.join('static', 'temp', filename))
             except:
                 flash("Erro na comparação")
@@ -124,7 +129,7 @@ def comparacao_imagem():
     else:
         flash('Só são permitidas imagens com extensão .jpg.')
         return redirect('/comparacao')
-        
+    
     return render_template('comparacao1.html', filename = uuid)
 
 @app.route('/comparacao/display/<filename>')
@@ -144,9 +149,6 @@ def comparacao2_imagem():
         flash('Nenhum arquivo encontrado')
         
     files = request.files.getlist('files[]')
-    file_names =[]
-    file_uuid =[]
-    file_phash = []
     phash_temp = []
     print(len(files))
 
@@ -160,7 +162,6 @@ def comparacao2_imagem():
                     try:
                         phash = str(gerador_phash_temp(filename))
                         phash_temp.append(phash)
-                        print(phash)
                         os.remove(os.path.join('./static/temp/', filename))
                     except:
                         flash("Erro ao gerar o hash")
@@ -169,9 +170,14 @@ def comparacao2_imagem():
                 flash('Só são permitidas imagens com extensão .jpg.')
                 return redirect('/comparacao2')
         dif = comparacao_phash_2img(phash_temp[0], phash_temp[1])
-        flash("A diferença entre elas é de " + str(dif) + "%")
+
+        if dif == 0:
+            flash("As imagens são iguais.")
+        else:
+            flash("A diferença entre as imagens é de " + str(dif) + "%.")
+
     else:
-        flash('Só são permitidas upload de 2 imagens.')
+        flash('Só é permitido o upload de 2 imagens.')
         return redirect('/comparacao2')
     return render_template('comparacao2.html')
 
