@@ -4,7 +4,7 @@ from controller.renomearimagem import renomearimagem
 from controller.gerador_phash import gerador_phash, gerador_phash_temp
 from bd.Inserir import inserir_banco
 from bd.deletar_banco import deletar
-from controller.comparacao_phash import comparacao_phash_banco
+from controller.comparacao_phash import comparacao_phash_banco, comparacao_phash_2img
 # from controller.receber_dados_bd import receber_dados_bd
 
 from flask import Flask, flash, redirect, render_template, request, url_for
@@ -150,6 +150,53 @@ def comparacao_imagem():
 def display_image_comp(filename):
     print('display_image filename: ' + filename)
     return redirect(url_for('static', filename = '/uploads/' + filename), code = 301)
+
+
+@app.route("/comparacao2")
+def comparacao_form2():
+    return render_template('comparacao2.html')
+
+@app.route("/comparacao2", methods = ['POST'])
+def comparacao2_imagem():
+    
+    if 'files[]' not in request.files:
+        flash('Nenhum arquivo encontrado')
+        
+    files = request.files.getlist('files[]')
+    file_names =[]
+    file_uuid =[]
+    file_phash = []
+    phash_temp = []
+    print(len(files))
+
+    if len(files)==2:
+        for file in files:
+            if file and allowed_file(file.filename):
+                    #salva o nome do arquivo no vetor
+                    filename = secure_filename(file.filename)
+                    #salva a imagem
+                    file.save(os.path.join('./static/temp/', filename))
+                    try:
+                        phash = str(gerador_phash_temp(filename))
+                        phash_temp.append(phash)
+                        print(phash)
+                        os.remove(os.path.join('./static/temp/', filename))
+
+                    except:
+                        flash("Erro ao gerar o hash")
+                        return redirect('/comparacao2')
+            
+            else:
+                flash('Só são permitidas imagens com extensão .jpg.')
+                return redirect('/comparacao2')
+
+        dif = comparacao_phash_2img(phash_temp[0], phash_temp[1])
+        flash("A diferença entre elas é de " + str(dif) + "%")
+    else:
+        flash('Só são permitidas upload de 2 imagens.')
+        return redirect('/comparacao2')
+
+    return render_template('comparacao2.html')
 
 
 if __name__ == "__main__":

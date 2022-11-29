@@ -1,0 +1,41 @@
+<html>
+
+<head>
+    <title>Compare duas imagens.</title>
+</head>
+
+<body>
+    <div style="padding:20px;">
+        <h2>Compare duas imagens.</h2>
+        <p>
+            {% with messages = get_flashed_messages() %}
+            {% if messages %}
+        <ul class=flashes>
+            {% for message in messages%}
+            <li>{{ message }}</li>
+            {% endfor %}
+        </ul>
+        {% endif %}
+        {% endwith %}
+        </p>
+        <form method="post" action="/comparacao2" enctype="multipart/form-data">
+            <dl>
+                <p>
+                    <input type="file" name="files[]" multiple="true" autocomplete="off" required>
+                </p>
+
+            </dl>
+            <p>
+                <input type="submit" value="Submit">
+            </p>
+
+        </form>
+        {% if filename %}
+        <div style="padding:20px;float:left;">
+            <img width="500" src="{{ url_for('display_image_comp2', filename = filename) }}">
+        </div>
+        {% endif %}
+    </div>
+</body>
+
+</html>
