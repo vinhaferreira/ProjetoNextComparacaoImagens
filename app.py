@@ -5,8 +5,6 @@ from controller.gerador_phash import gerador_phash, gerador_phash_temp
 from bd.Inserir import inserir_banco
 from bd.deletar_banco import deletar
 from controller.comparacao_phash import comparacao_phash_banco, comparacao_phash_2img
-# from controller.receber_dados_bd import receber_dados_bd
-
 from flask import Flask, flash, redirect, render_template, request, url_for
 from werkzeug.utils import secure_filename
 
@@ -87,24 +85,12 @@ def deletar_img():
 @app.route("/deletar", methods = ['POST'])
 def deletar_imagem():
     print("to aqui")
-    # cod_uuid = request.args['uuid']
-    # filename = f"{cod_uuid}.jpg"
     filename = request.form.get('uuid')
     print(request.form.get('uuid'))
-    # print(cod_uuid)
-    # print(filename)
     print("to aqui")
     deletar(filename)
     return "ok",200
-     
 
-# @app.route("/deletar/<uuid>")
-# def deletar_a_imagem(uuid):
-#     filename = f"{uuid}.jpg"
-#     deletar(filename)
-#     return redirect('/')
-
-    
 @app.route("/comparacao")
 def comparacao_form():
     return render_template('comparacao1.html')
@@ -125,26 +111,21 @@ def comparacao_imagem():
             file.save(os.path.join('./static/temp/', filename))
             try:
                 phash_temp = str(gerador_phash_temp(filename))
-                #renomeia o arquivo
                 dados = comparacao_phash_banco(phash_temp)
-                
-                img_mais_parecida = dados[0]
+                uuid = dados[0]
+                nome_original = dados[2]
                 diferenca = dados[1]
-
-                # flash(phash_temp)
-                flash(img_mais_parecida)
-                flash(diferenca+'%')
-                os.remove(os.path.join('./static/temp/', filename))
-
+                flash(nome_original)
+                flash(str(diferenca)+'%')
+                os.remove(os.path.join('static', 'temp', filename))
             except:
-                flash(img_mais_parecida)
+                flash("Erro na comparação")
                 return redirect('/comparacao')
-
     else:
         flash('Só são permitidas imagens com extensão .jpg.')
         return redirect('/comparacao')
         
-    return render_template('comparacao1.html', filename = img_mais_parecida)
+    return render_template('comparacao1.html', filename = uuid)
 
 @app.route('/comparacao/display/<filename>')
 def display_image_comp(filename):
@@ -158,7 +139,7 @@ def comparacao_form2():
 
 @app.route("/comparacao2", methods = ['POST'])
 def comparacao2_imagem():
-    
+
     if 'files[]' not in request.files:
         flash('Nenhum arquivo encontrado')
         
@@ -181,23 +162,18 @@ def comparacao2_imagem():
                         phash_temp.append(phash)
                         print(phash)
                         os.remove(os.path.join('./static/temp/', filename))
-
                     except:
                         flash("Erro ao gerar o hash")
                         return redirect('/comparacao2')
-            
             else:
                 flash('Só são permitidas imagens com extensão .jpg.')
                 return redirect('/comparacao2')
-
         dif = comparacao_phash_2img(phash_temp[0], phash_temp[1])
         flash("A diferença entre elas é de " + str(dif) + "%")
     else:
         flash('Só são permitidas upload de 2 imagens.')
         return redirect('/comparacao2')
-
     return render_template('comparacao2.html')
-
 
 if __name__ == "__main__":
     app.run(debug=True)
